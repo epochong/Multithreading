@@ -10,7 +10,6 @@ package www.designmode;
 
 /**
  * 饿汉式单例
- *
  */
 
 class Singleton {
@@ -27,7 +26,7 @@ class Singleton {
  */
 class HungrySingleton {
     private static HungrySingleton singleton;
-    private HungrySingleton() {};
+    private HungrySingleton() {}
     public static HungrySingleton getInstance() {
         //线程1、2同时进来都是null，所以new出来布置一个对象
         if (singleton == null) {
@@ -36,7 +35,7 @@ class HungrySingleton {
         return singleton;
     }
 }
-/**
+/*
  * singleton = new Singleton();
  * 1-在堆上分配空间
  * 2-属性初始化
@@ -51,7 +50,7 @@ class HungrySingleton {
  */
 
 /**
- * 最完整的懒汉式单例模式(双重加锁单例模式)
+ * 最完整的懒汉式单例模式(双重加锁、双重检查 单例模式)
  * 线程安全的懒汉单例模式，写单例直接写这个
  */
 class ThreadSafeHungrySingleton {
@@ -64,7 +63,7 @@ class ThreadSafeHungrySingleton {
     private static volatile ThreadSafeHungrySingleton singleton;
     private ThreadSafeHungrySingleton() {
         str = "hello";
-    };
+    }
 
     public ThreadSafeHungrySingleton(String str) {
         this.str = str;
@@ -75,7 +74,7 @@ class ThreadSafeHungrySingleton {
         //双重检查
         //single checked
         if (singleton == null) {
-            /**
+            /*
              * 不在single checked外加synchronized 是因为力度要轻，我们还需在单立中干一些事情
              * 第一层锁保证,拿到的一定是同一个对象
              */
@@ -90,5 +89,24 @@ class ThreadSafeHungrySingleton {
         return singleton;
     }
 }
+
+class Text {
+    private static volatile Text text;
+
+    private Text() {
+    }
+    public static Text getInstance() {
+        if (text == null) {
+            synchronized (Text.class) {
+                if (text == null) {
+                    text = new Text();
+                }
+            }
+        }
+        return text;
+    }
+
+}
 public class Hungry {
+
 }
